@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+#define BUFFER_SIZE 1024
+
+int main() {
+    FILE *file;
+    char filename[BUFFER_SIZE];
+    char search_string[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE];
+
+    // Prompt the user to enter the name of the file and the search string
+    printf("Enter the name of the file: ");
+    fgets(filename, BUFFER_SIZE, stdin);
+    filename[strcspn(filename, "\n")] = '\0';
+
+    printf("Enter the search string: ");
+    fgets(search_string, BUFFER_SIZE, stdin);
+    search_string[strcspn(search_string, "\n")] = '\0';
+
+    // Open the file for reading
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Failed to open file.\n");
+        return 1;
+    }
+
+    // Loop through each line in the file
+    while (fgets(buffer, BUFFER_SIZE, file)) {
+        // If the line contains the search string, print it to the console
+        if (strstr(buffer, search_string) != NULL) {
+            printf("%s", buffer);
+        }
+    }
+
+    // Close the file
+    fclose(file);
+
+    return 0;
+}
