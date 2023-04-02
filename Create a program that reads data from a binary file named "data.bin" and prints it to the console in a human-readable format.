@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+#define BUFFER_SIZE 1024
+
+int main() {
+    FILE *data_file;
+    char buffer[BUFFER_SIZE];
+    int num_records, record_size;
+
+    // Open the data file for reading
+    data_file = fopen("data.bin", "rb");
+    if (data_file == NULL) {
+        printf("Failed to open data file.\n");
+        return 1;
+    }
+
+    // Read the number of records and record size from the file
+    fread(&num_records, sizeof(int), 1, data_file);
+    fread(&record_size, sizeof(int), 1, data_file);
+
+    // Print the number of records and record size
+    printf("Number of records: %d\n", num_records);
+    printf("Record size: %d bytes\n", record_size);
+
+    // Loop through each record in the file
+    while (fread(buffer, record_size, 1, data_file)) {
+        // Print the record data
+        printf("Record data: %s\n", buffer);
+    }
+
+    // Close the data file
+    fclose(data_file);
+
+    return 0;
+}
