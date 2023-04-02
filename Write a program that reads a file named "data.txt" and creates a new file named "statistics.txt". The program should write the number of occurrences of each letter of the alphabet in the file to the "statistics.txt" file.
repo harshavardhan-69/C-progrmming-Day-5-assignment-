@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define BUFFER_SIZE 1024
+
+int main() {
+    FILE *input_file, *output_file;
+    char buffer[BUFFER_SIZE];
+    int letter_counts[26] = {0};
+    int i, c;
+
+    // Open the input file for reading
+    input_file = fopen("data.txt", "r");
+    if (input_file == NULL) {
+        printf("Failed to open input file.\n");
+        return 1;
+    }
+
+    // Loop through each character in the file
+    while ((c = fgetc(input_file)) != EOF) {
+        // If the character is a letter, increment its count in the letter_counts array
+        if (isalpha(c)) {
+            letter_counts[tolower(c) - 'a']++;
+        }
+    }
+
+    // Close the input file
+    fclose(input_file);
+
+    // Open the output file for writing
+    output_file = fopen("statistics.txt", "w");
+    if (output_file == NULL) {
+        printf("Failed to open output file.\n");
+        return 1;
+    }
+
+    // Write the letter counts to the output file
+    for (i = 0; i < 26; i++) {
+        fprintf(output_file, "%c: %d\n", 'a' + i, letter_counts[i]);
+    }
+
+    // Close the output file
+    fclose(output_file);
+
+    return 0;
+}
